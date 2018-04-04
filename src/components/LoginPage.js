@@ -1,20 +1,48 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import './LoginPage.css';
+import { TextField, Paper, Button } from 'material-ui';
 
 class LoginPage extends Component {
+
+  handleLogin = () => {
+    console.log('Loging in....');
+  }
+  
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="LoginPage">
+        <Paper className="input-wrapper">
+          <h2>Accedi</h2>
+          <TextField 
+            label={"Email"} 
+            className="input-field"
+          />
+          <TextField 
+            label={"Password"} 
+            type="password" 
+            className="input-field"
+          />
+          <a href="#" className="pw-link">Password dimenticata?</a>
+          <Button 
+            variant="raised" 
+            color="secondary" 
+            className="input-button"
+            onClick={this.handleLogin}
+            >
+              Login
+          </Button>
+          <Button 
+            variant="raised" 
+            color="secondary" 
+            className="input-button"
+            disabled={true}
+            >
+              Registrati
+          </Button>
+        </Paper>
       </div>
     );
   }
 }
 
-export default App;
+export default LoginPage;
