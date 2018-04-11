@@ -53,30 +53,45 @@ app.post('/api/login', upload.fields([]), (req, res) => {
 });
 
 app.post('/api/add-list', upload.fields([]), (req, res) => {
-  console.log( req.body );
   knex('lists').insert(req.body).returning('id').then(result => {
-    console.log('RESULT', result);
     knex('lists').where('id', result[0])
     .then(list => res.json(list));
   });
 });
 
 app.get('/api/lists', (req, res) => {
-  console.log(req.params, req.query);
   knex('lists').where('userId', req.query.userId)
   .then(result => {res.json(result)})
 })
 
-app.get('/api/lists', (req, res) => {
-  knex('lists').where('userId', req.query.userId)
-  .then(result => {res.json(result)})
-})
-
-app.delete('/api/delteList', (req, res) => {
-  console.log(req.params, req.query);
+app.delete('/api/deleteList', (req, res) => {
   knex('lists').where({
     userId: req.query.userId, 
     id: req.query.listId
+  }).del().then( result => {
+    res.send('success');
+  })
+});
+
+app.post('/api/add-todo', upload.fields([]), (req, res) => {
+  console.log( req.body );
+  knex('item').insert(req.body).returning('id').then(result => {
+    console.log('RESULT', result);
+    knex('item').where('id', result[0])
+    .then(todo => res.json(todo));
+  });
+});
+
+app.get('/api/todos', (req, res) => {
+  console.log(req.query)
+  knex('item').where('listId', req.query.listId)
+  .then(result => {res.json(result)})
+})
+
+app.delete('/api/deleteTodo', (req, res) => {
+  knex('item').where({
+    listId: req.query.listId, 
+    id: req.query.todoId
   }).del().then( result => {
     res.send('success');
   })
