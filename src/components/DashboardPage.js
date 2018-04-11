@@ -138,7 +138,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
   },
   deleteListAction: list => {
-    fetch(`/api/delteList?userId=${list.userId}&listId=${list.listId}`, { method: 'delete'})
+    fetch(`/api/deleteList?userId=${list.userId}&listId=${list.listId}`, { method: 'delete'})
     .then(json => dispatch({ type: 'LISTS_DELETE_SUCCESS', id:list.listId }))
     .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
   }
