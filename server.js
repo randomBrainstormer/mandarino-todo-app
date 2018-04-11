@@ -53,4 +53,19 @@ app.post('/api/login', upload.fields([]), (req, res) => {
   })
 });
 
+app.post('/api/add-list', upload.fields([]), (req, res) => {
+  console.log( req.body );
+  knex('lists').insert(req.body).returning('id').then(result => {
+    console.log('RESULT', result);
+    knex('lists').where('id', result[0])
+    .then(list => res.json(list));
+  });
+});
+
+app.get('/api/lists', (req, res) => {
+  console.log(req.params, req.query);
+  knex('lists').where('userId', req.query.userId)
+  .then(result => {res.json(result)})
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
