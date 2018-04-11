@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AppBar, Toolbar, ListItem, List, ListItemText, Grid, Button,
   Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, TextField, 
-  ListItemIcon, Icon} from 'material-ui';
+  ListItemIcon, ListItemSecondaryAction, Icon} from 'material-ui';
 import AddIcon from 'material-ui-icons/Add';
 import { Link } from 'react-router-dom'; 
 import { connect } from 'react-redux';
@@ -38,6 +38,11 @@ class DashboardPage extends Component {
     this.handleClose();
   }
 
+  handleDelete = (e) => {
+    const id = e.target.getAttribute('data-id');
+    this.props.deleteListAction({ userId: this.props.userId, listId: id });
+  }
+
   render() {
     return (
       <div className="DashboardPage">
@@ -49,15 +54,18 @@ class DashboardPage extends Component {
         <List component="nav">
         </List>
         {
-          this.props.lists.map((list, i) => (
-            <Link key={list.id} className="DashboardPage-list" to={`/list/${list.id}`}>
-              <ListItem key={list.id} button>
+          this.props.lists.map((list, i) => (            
+              <ListItem className="DashboardPage-list" key={list.id} button>
                 <ListItemIcon>
                   <Icon>list</Icon>
                 </ListItemIcon>
-                <ListItemText primary={list.name} />
+                <Link key={list.id} to={`/list/${list.id}`} className="DashboardPage-list-link" >
+                  <ListItemText primary={list.name} />
+                </Link>
+                <ListItemSecondaryAction>
+                    <Icon data-id={list.id} className="deleteIcon" onClick={this.handleDelete}>delete</Icon>
+                </ListItemSecondaryAction>
               </ListItem>
-            </Link>
           ))
         }
         <Grid container wrap="wrap" spacing={16}>
@@ -125,6 +133,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     fetch(`/api/lists?userId=${userId}`)
     .then(res => res.json())
     .then(json => dispatch({ type: 'LISTS_UPDATE_SUCCESS', lists: json }))
+    .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
+  },
+  deleteListAction: list => {
+    fetch(`/api/delteList?userId=${list.userId}&listId=${list.listId}`, { method: 'delete'})
+    .then(json => dispatch({ type: 'LISTS_DELETE_SUCCESS', id:list.listId }))
     .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
   }
 });
