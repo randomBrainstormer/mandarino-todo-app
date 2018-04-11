@@ -38,6 +38,8 @@ const lists = (state = {lists: []}, action) => {
     return {...state, lists: action.lists}
     case 'LISTS_ADD_SUCCESS':
       return {...state, lists: [...state.lists, action.list ]};
+    case 'LISTS_DELETE_SUCCESS':
+      return {...state, lists: state.lists.filter( item => Number(item.id) !== Number(action.id))};
     default:
       return state
   }
