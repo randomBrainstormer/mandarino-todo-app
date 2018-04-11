@@ -12,7 +12,7 @@ L'utente di prova è    user:  test   password: test
 
 
 TODO
-[] Implementare l'scrittura e lettura DB de le liste
+[] Implementare l'scrittura e lettura DB delle liste
 [] Implementare l'scrittura e lettura DB dei ToDos 
 [] Aggiungere funzione Logout
 [] Fare il login permanente per la sezione

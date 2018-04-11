@@ -11,6 +11,12 @@
   color: white;
 }
 
+.Dashboard-toolbar h2 {
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
 .Dashboard-toolbar a {
   padding: 0 1rem 0 0;
 }

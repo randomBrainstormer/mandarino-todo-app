@@ -15,7 +15,7 @@ class TodoListPage extends Component {
       <div className="TodoListPage">
         <AppBar position="static" color="default">
           <Toolbar className="Dashboard-toolbar">
-          <Link to="/"><Icon>arrow_back</Icon></Link>
+            <Link to="/"><Icon>arrow_back</Icon></Link>
             <h2>TO-DO App</h2>
           </Toolbar>
         </AppBar>
