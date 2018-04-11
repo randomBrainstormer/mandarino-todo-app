@@ -67,4 +67,19 @@ app.get('/api/lists', (req, res) => {
   .then(result => {res.json(result)})
 })
 
+app.get('/api/lists', (req, res) => {
+  knex('lists').where('userId', req.query.userId)
+  .then(result => {res.json(result)})
+})
+
+app.delete('/api/delteList', (req, res) => {
+  console.log(req.params, req.query);
+  knex('lists').where({
+    userId: req.query.userId, 
+    id: req.query.listId
+  }).del().then( result => {
+    res.send('success');
+  })
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
