@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import './LoginPage.css';
+import { connect } from 'react-redux';
 import { TextField, Paper, Button } from 'material-ui';
+// import { loginAction } from '../actions';
 
 class LoginPage extends Component {
+  handleLogin = (event) => {
+    event.preventDefault();
 
-  handleLogin = () => {
-    console.log('Loging in....');
+    const data = new FormData(event.target);
+    this.props.loginAction(data);
   }
   
   render() {
@@ -13,36 +17,61 @@ class LoginPage extends Component {
       <div className="LoginPage">
         <Paper className="input-wrapper">
           <h2>Accedi</h2>
-          <TextField 
-            label={"Email"} 
-            className="input-field"
-          />
-          <TextField 
-            label={"Password"} 
-            type="password" 
-            className="input-field"
-          />
-          <a href="#" className="pw-link">Password dimenticata?</a>
-          <Button 
-            variant="raised" 
-            color="secondary" 
-            className="input-button"
-            onClick={this.handleLogin}
-            >
-              Login
-          </Button>
-          <Button 
-            variant="raised" 
-            color="secondary" 
-            className="input-button"
-            disabled={true}
-            >
-              Registrati
-          </Button>
+          <form className="input-wrapper-form" onSubmit={this.handleLogin}>
+            <TextField 
+              label={"Email"} 
+              name="email"
+              className="input-field"
+            />
+            <TextField 
+              label={"Password"} 
+              type="password" 
+              name="password"
+              className="input-field"
+            />
+            <a href="#" className="pw-link">Password dimenticata?</a>
+            <Button 
+              variant="raised" 
+              color="secondary" 
+              className="input-button"
+              type="submit"
+              >
+                Login
+            </Button>
+            <Button 
+              variant="raised" 
+              color="secondary" 
+              className="input-button"
+              disabled={true}
+              >
+                Registrati
+            </Button>
+          </form>
         </Paper>
       </div>
     );
   }
 }
 
-export default LoginPage;
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  // loginAction
+  loginAction: data => {
+    fetch('/api/login', { method: 'POST', body: data })
+      .then(res => res.json())
+      .then(json => {
+        if (json.length > 0) {
+          console.log('sucess.. dispatching USERS_LOGIN_SUCESS')
+          dispatch({ type: 'USERS_LOGIN_SUCCESS', user: json[0] });
+        }
+        else {
+          dispatch({ type: 'USERS_LOGIN_FAILURE', json });
+        }
+      })
+      .catch(error => dispatch({ type: 'USERS_LOGIN_FAILURE', error }));
+  }
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+ )(LoginPage);
