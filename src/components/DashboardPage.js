@@ -28,7 +28,7 @@ class DashboardPage extends Component {
     event.preventDefault();
 
     const data = new FormData(event.target);
-    data.append()
+    data.append(this.props.login.userId);
     
     this.props.addListAction(data);
 
@@ -102,7 +102,7 @@ class DashboardPage extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addListAction: data => {
-    fetch('/api/addList', { method: 'POST', body: data })
+    fetch('/api/add-list', { method: 'POST', body: data })
       .then(res => res.json())
       .then(json => {
         if (json.length > 0) {
