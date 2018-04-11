@@ -2,6 +2,14 @@
     
 }
 
+.DashboardPage li {
+  list-style: none;
+}
+
+.DashboardPage-list-link {
+  width: 100%;
+}
+
 .DashboardPage-list {
   text-decoration: none;
 }
@@ -23,4 +31,10 @@
 
 .Dashboard-toolbar span{
   color: white;
+}
+
+.deleteIcon {
+  color: #ba000d;
+  cursor: pointer;
+  padding-right: 1rem;
 }

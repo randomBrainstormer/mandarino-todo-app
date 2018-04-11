@@ -57,17 +57,16 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   // loginAction
   loginAction: data => {
     fetch('/api/login', { method: 'POST', body: data })
-      .then(res => res.json())
-      .then(json => {
-        if (json.length > 0) {
-          console.log('sucess.. dispatching USERS_LOGIN_SUCESS')
-          dispatch({ type: 'USERS_LOGIN_SUCCESS', user: json[0] });
-        }
-        else {
-          dispatch({ type: 'USERS_LOGIN_FAILURE', json });
-        }
-      })
-      .catch(error => dispatch({ type: 'USERS_LOGIN_FAILURE', error }));
+    .then(res => res.json())
+    .then(json => {
+      if (json.length > 0) {
+        dispatch({ type: 'USERS_LOGIN_SUCCESS', user: json[0] });
+      }
+      else {
+        dispatch({ type: 'USERS_LOGIN_FAILURE', json });
+      }
+    })
+    .catch(error => dispatch({ type: 'USERS_LOGIN_FAILURE', error }));
   }
 });
 

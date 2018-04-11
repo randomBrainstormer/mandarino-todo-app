@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { AppBar, Toolbar, ListItem, List, ListItemText, Grid, Button,
   Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, TextField, 
-  ListItemIcon, Icon} from 'material-ui';
+  ListItemIcon, ListItemSecondaryAction, Icon} from 'material-ui';
 import AddIcon from 'material-ui-icons/Add';
 import { Link } from 'react-router-dom'; 
 import { connect } from 'react-redux';
 import './DashboardPage.css';
 
-const testList = ['Home Shores', 'Work', 'Before Sunday'];
-
 class DashboardPage extends Component {
   state = {
     open: false,
   };
+
+  componentDidMount(){
+    this.props.getListsAction(this.props.userId);
+  }
 
   // Apertura del modal
   handleClickOpen = () => {
@@ -26,14 +28,19 @@ class DashboardPage extends Component {
 
   handleAddList = (event) => {
     event.preventDefault();
-
+    
     const data = new FormData(event.target);
-    data.append(this.props.login.userId);
+    data.append('userId', this.props.userId);
     
     this.props.addListAction(data);
 
     // chiudere la modal
     this.handleClose();
+  }
+
+  handleDelete = (e) => {
+    const id = e.target.getAttribute('data-id');
+    this.props.deleteListAction({ userId: this.props.userId, listId: id });
   }
 
   render() {
@@ -47,15 +54,18 @@ class DashboardPage extends Component {
         <List component="nav">
         </List>
         {
-          testList.map((list, i) => (
-            <Link className="DashboardPage-list" to="/list/1">
-              <ListItem key={i} button>
+          this.props.lists.map((list, i) => (            
+              <ListItem className="DashboardPage-list" key={list.id} button>
                 <ListItemIcon>
                   <Icon>list</Icon>
                 </ListItemIcon>
-                <ListItemText primary={list} />
+                <Link key={list.id} to={`/list/${list.id}`} className="DashboardPage-list-link" >
+                  <ListItemText primary={list.name} />
+                </Link>
+                <ListItemSecondaryAction>
+                    <Icon data-id={list.id} className="deleteIcon" onClick={this.handleDelete}>delete</Icon>
+                </ListItemSecondaryAction>
               </ListItem>
-            </Link>
           ))
         }
         <Grid container wrap="wrap" spacing={16}>
@@ -80,7 +90,7 @@ class DashboardPage extends Component {
                   autoFocus
                   margin="dense"
                   id="list-name"
-                  name="list-name"
+                  name="name"
                   label="Nome Lista"
                   fullWidth
                 />
@@ -100,24 +110,39 @@ class DashboardPage extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  userId: state.login.userId,
+  lists: state.lists.lists
+});
+
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addListAction: data => {
     fetch('/api/add-list', { method: 'POST', body: data })
-      .then(res => res.json())
-      .then(json => {
-        if (json.length > 0) {
-          console.log('sucess.. dispatching USERS_LOGIN_SUCESS')
-          dispatch({ type: 'USERS_LOGIN_SUCCESS', user: json[0] });
-        }
-        else {
-          dispatch({ type: 'USERS_LOGIN_FAILURE', json });
-        }
-      })
-      .catch(error => dispatch({ type: 'USERS_LOGIN_FAILURE', error }));
+    .then(res => res.json())
+    .then(json => {
+      if (json.length > 0) {
+        dispatch({ type: 'LISTS_ADD_SUCCESS', list: json[0] });
+      }
+      else {
+        dispatch({ type: 'REQUEST_FAILURE', json });
+      }
+    })
+    .catch(error => dispatch({ type: 'LIST_ADD_FAILURE', error }));
+  },
+  getListsAction: userId => {
+    fetch(`/api/lists?userId=${userId}`)
+    .then(res => res.json())
+    .then(json => dispatch({ type: 'LISTS_UPDATE_SUCCESS', lists: json }))
+    .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
+  },
+  deleteListAction: list => {
+    fetch(`/api/delteList?userId=${list.userId}&listId=${list.listId}`, { method: 'delete'})
+    .then(json => dispatch({ type: 'LISTS_DELETE_SUCCESS', id:list.listId }))
+    .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
   }
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
  )(DashboardPage);

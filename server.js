@@ -44,12 +44,41 @@ app.get('/api/hello', (req, res) => {
 });
 
 app.post('/api/login', upload.fields([]), (req, res) => {
-  console.log( req.body );
   knex('users').select('id', 'name').where({
     email: req.body.email,
     password: req.body.password
   }).then(dati => {
     res.json(dati);
+  })
+});
+
+app.post('/api/add-list', upload.fields([]), (req, res) => {
+  console.log( req.body );
+  knex('lists').insert(req.body).returning('id').then(result => {
+    console.log('RESULT', result);
+    knex('lists').where('id', result[0])
+    .then(list => res.json(list));
+  });
+});
+
+app.get('/api/lists', (req, res) => {
+  console.log(req.params, req.query);
+  knex('lists').where('userId', req.query.userId)
+  .then(result => {res.json(result)})
+})
+
+app.get('/api/lists', (req, res) => {
+  knex('lists').where('userId', req.query.userId)
+  .then(result => {res.json(result)})
+})
+
+app.delete('/api/delteList', (req, res) => {
+  console.log(req.params, req.query);
+  knex('lists').where({
+    userId: req.query.userId, 
+    id: req.query.listId
+  }).del().then( result => {
+    res.send('success');
   })
 });
 
