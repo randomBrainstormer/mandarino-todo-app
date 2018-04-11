@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AppBar, Toolbar, ListItem, List, ListItemText, Grid, Button,
   Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, TextField, 
-  ListItemIcon, ListItemSecondaryAction, Icon} from 'material-ui';
+  ListItemIcon, ListItemSecondaryAction, Icon, IconButton} from 'material-ui';
 import AddIcon from 'material-ui-icons/Add';
 import { Link } from 'react-router-dom'; 
 import { connect } from 'react-redux';
@@ -63,7 +63,9 @@ class DashboardPage extends Component {
                   <ListItemText primary={list.name} />
                 </Link>
                 <ListItemSecondaryAction>
-                    <Icon data-id={list.id} className="deleteIcon" onClick={this.handleDelete}>delete</Icon>
+                  <IconButton aria-label="Delete" className="deleteIcon" data-id={list.id} onClick={this.handleDelete}>
+                    <Icon data-id={list.id}>delete</Icon>
+                  </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
           ))
