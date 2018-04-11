@@ -32,8 +32,20 @@ const login = (state = {loggedIn: false}, action) => {
   }
 }
 
+const lists = (state = {lists: []}, action) => {
+  switch (action.type) {
+    case 'LISTS_UPDATE_SUCCESS':
+    return {...state, lists: action.lists}
+    case 'LISTS_ADD_SUCCESS':
+      return {...state, lists: [...state.lists, action.list ]};
+    default:
+      return state
+  }
+}
+
 export default {
   todos,
+  lists,
   login
   // visibilityFilter
 };
