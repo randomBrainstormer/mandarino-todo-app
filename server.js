@@ -44,7 +44,6 @@ app.get('/api/hello', (req, res) => {
 });
 
 app.post('/api/login', upload.fields([]), (req, res) => {
-  console.log( req.body );
   knex('users').select('id', 'name').where({
     email: req.body.email,
     password: req.body.password

@@ -24,7 +24,6 @@ const todos = (state = {}, action) => {
 }
 
 const login = (state = {loggedIn: false}, action) => {
-  console.log('state and action', state, action);
   switch (action.type) {
     case 'USERS_LOGIN_SUCCESS':
       return {...state, loggedIn: true, userId: action.user.id, name: action.user.name };
