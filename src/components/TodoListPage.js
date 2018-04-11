@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-// import './LoginPage.css';
+import './TodoListPage.css';
 import { List, ListItem, ListItemText, ListItemSecondaryAction, Checkbox, IconButton, Icon,
-Grid, TextField, AppBar, Toolbar} from 'material-ui';
+TextField, AppBar, Toolbar} from 'material-ui';
 import { Link } from 'react-router-dom'; 
 
 class TodoListPage extends Component {
@@ -15,18 +15,14 @@ class TodoListPage extends Component {
       <div className="TodoListPage">
         <AppBar position="static" color="default">
           <Toolbar className="Dashboard-toolbar">
-          <Link to="/"><Icon>navigate_before</Icon></Link>
+          <Link to="/"><Icon>arrow_back</Icon></Link>
             <h2>TO-DO App</h2>
           </Toolbar>
         </AppBar>
-        <Grid container spacing={8} alignItems="flex-end">
-          <Grid item>
-            <Icon>add</Icon>
-          </Grid>
-          <Grid item>
-            <TextField id="input-with-icon-grid" label="Aggiungi un ToDo" />
-          </Grid>
-        </Grid>
+        <div className="TodoListPage-add">
+          <Icon className="TodoListPage-add-icon">add</Icon>
+          <TextField className="TodoListPage-add-input" id="input-with-icon-grid" label="Aggiungi un ToDo" />
+        </div>
         <List>
           <ListItem
             // key={i}

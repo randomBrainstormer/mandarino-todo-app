@@ -11,6 +11,10 @@
   color: white;
 }
 
+.Dashboard-toolbar a {
+  padding: 0 1rem 0 0;
+}
+
 .Dashboard-toolbar span{
   color: white;
 }
