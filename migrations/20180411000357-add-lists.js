@@ -16,7 +16,7 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db, callback) {
   db.createTable('lists', {
-    id: { type: 'int', primaryKey: true },
+    id: { type: 'int', primaryKey: true, autoIncrement: true },
     name: {
       type: 'string',
       notNull: true,
@@ -35,7 +35,7 @@ exports.up = function(db, callback) {
   }, callback);
 
   db.createTable('item', {
-    id: { type: 'int', primaryKey: true },
+    id: { type: 'int', primaryKey: true, autoIncrement: true },
     name: 'string',
     expires: 'datetime',
     created: 'timestamp',
@@ -57,6 +57,7 @@ exports.up = function(db, callback) {
 
 exports.down = function(db, callback) {
   db.dropTable('lists', callback);
+  db.dropTable('item', callback);
 };
 
 exports._meta = {
