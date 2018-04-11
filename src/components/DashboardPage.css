@@ -1,3 +1,16 @@
 .DashboardPage {
     
 }
+
+.DashboardPage-list {
+  text-decoration: none;
+}
+
+.Dashboard-toolbar {
+  background: #4A148C;
+  color: white;
+}
+
+.Dashboard-toolbar span{
+  color: white;
+}

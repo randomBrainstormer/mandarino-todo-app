@@ -4,6 +4,8 @@ import { AppBar, Toolbar, ListItem, List, ListItemText, Grid, Button,
   ListItemIcon, Icon} from 'material-ui';
 import AddIcon from 'material-ui-icons/Add';
 import { Link } from 'react-router-dom'; 
+import { connect } from 'react-redux';
+import './DashboardPage.css';
 
 const testList = ['Home Shores', 'Work', 'Before Sunday'];
 
@@ -23,18 +25,12 @@ class DashboardPage extends Component {
   };
 
   handleAddList = (event) => {
-    
     event.preventDefault();
+
     const data = new FormData(event.target);
-  
-    console.log('Hnalding the log', event.target, data);
-    // fetch('/api/form-submit-url', {
-    //   method: 'POST',
-    //   body: data,
-    // });
-    data.forEach(function(value, key){
-        console.log(value, key);
-    });
+    data.append()
+    
+    this.props.addListAction(data);
 
     // chiudere la modal
     this.handleClose();
@@ -44,19 +40,18 @@ class DashboardPage extends Component {
     return (
       <div className="DashboardPage">
         <AppBar position="static" color="default">
-          <Toolbar>
-            <h2>TO-DO</h2>
+          <Toolbar className="Dashboard-toolbar">
+            <h2>TO-DO App</h2>
           </Toolbar>
         </AppBar>
         <List component="nav">
         </List>
         {
           testList.map((list, i) => (
-            <Link to="/list/1">
+            <Link className="DashboardPage-list" to="/list/1">
               <ListItem key={i} button>
                 <ListItemIcon>
                   <Icon>list</Icon>
-
                 </ListItemIcon>
                 <ListItemText primary={list} />
               </ListItem>
@@ -105,4 +100,24 @@ class DashboardPage extends Component {
   }
 }
 
-export default DashboardPage;
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  addListAction: data => {
+    fetch('/api/addList', { method: 'POST', body: data })
+      .then(res => res.json())
+      .then(json => {
+        if (json.length > 0) {
+          console.log('sucess.. dispatching USERS_LOGIN_SUCESS')
+          dispatch({ type: 'USERS_LOGIN_SUCCESS', user: json[0] });
+        }
+        else {
+          dispatch({ type: 'USERS_LOGIN_FAILURE', json });
+        }
+      })
+      .catch(error => dispatch({ type: 'USERS_LOGIN_FAILURE', error }));
+  }
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+ )(DashboardPage);
