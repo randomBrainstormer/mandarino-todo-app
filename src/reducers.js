@@ -6,8 +6,10 @@ const todos = (state = {todos: []}, action) => {
     case 'ADD_TODO':
       return {...state, todos: [...state.todos, action.todo ]};
     case 'TODOS_UPDATE_SUCCESS':
-      console.log('items', action)
-      return {...state, todos: action.todos}
+      return {...state, todos: action.todos};
+    case 'TODOS_DELETE_SUCCESS':
+      console.log('filtering id', action.id);
+      return {...state, todos: state.todos.map(todo => todo.id === action.id ? action.todo : todo)};
     default:
       return state
   }
