@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './TodoListPage.css';
-import { List, ListItem, ListItemText, Checkbox, Icon,
-TextField, AppBar, Toolbar, Button} from 'material-ui';
+import { List, Icon, TextField, Button} from 'material-ui';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'; 
 import TodoItem from './TodoItem';
+import AppHeader from './Header';
 
 class TodoListPage extends Component {
 
@@ -34,12 +33,7 @@ class TodoListPage extends Component {
   render() {
     return (
       <div className="TodoListPage">
-        <AppBar position="static" color="default">
-          <Toolbar className="Dashboard-toolbar">
-            <Link to="/"><Icon>arrow_back</Icon></Link>
-            <h2>TO-DO APP</h2>
-          </Toolbar>
-        </AppBar>
+        <AppHeader link="/" />
         <div className="TodoListPage-add">
           <Icon className="TodoListPage-add-icon">add</Icon>
           <form className="TodoListPage-form" onSubmit={this.handleAddTodo}>

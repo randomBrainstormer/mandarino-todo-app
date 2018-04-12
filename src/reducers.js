@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 
 const todos = (state = {todos: []}, action) => {
   // console.log('state in reducer', state, action);
@@ -16,20 +15,19 @@ const todos = (state = {todos: []}, action) => {
   }
   
 let user = JSON.parse(localStorage.getItem('mandarino-user'));
-const authInitialState = user ? { loggedIn: true, user } : {loggedIn: false};
+const authInitialState = user ? { loggedIn: true, user, snackOpen: false } : {loggedIn: false, snackOpen: false};
 
 const login = (state = authInitialState, action) => {
   switch (action.type) {
     case 'USERS_LOGIN_SUCCESS':
       return {...state, loggedIn: true, user: action.user };
     case 'USERS_LOGIN_FAILURE':
-      return {};
+      return {snackOpen: true};
+    case 'USERS_LOGIN_SNACK_CLOSE':
+      return {snackOpen: false};
     case 'USERS_LOGOUT':
-      return {};
-
-
-    
-      default:
+      return {};    
+    default:
       return state
   }
 }

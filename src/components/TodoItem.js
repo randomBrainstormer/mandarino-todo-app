@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Zoom, ListItem, ListItemText, Checkbox, Icon,
-TextField, AppBar, Toolbar, Button} from 'material-ui';
+import { Zoom, ListItem, ListItemText, Checkbox} from 'material-ui';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'; 
 
 class TodoItem extends Component {
   state = {
