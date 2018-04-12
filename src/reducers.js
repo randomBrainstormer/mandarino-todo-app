@@ -21,7 +21,6 @@ const authInitialState = user ? { loggedIn: true, user } : {loggedIn: false};
 const login = (state = authInitialState, action) => {
   switch (action.type) {
     case 'USERS_LOGIN_SUCCESS':
-    //userId: action.user.id, name: action.user.name
       return {...state, loggedIn: true, user: action.user };
     case 'USERS_LOGIN_FAILURE':
       return {};
