@@ -12,14 +12,25 @@ const todos = (state = {todos: []}, action) => {
       return {...state, todos: state.todos.map(todo => todo.id === action.id ? action.todo : todo)};
     default:
       return state
+    }
   }
-}
+  
+let user = JSON.parse(localStorage.getItem('mandarino-user'));
+const authInitialState = user ? { loggedIn: true, user } : {loggedIn: false};
 
-const login = (state = {loggedIn: false}, action) => {
+const login = (state = authInitialState, action) => {
   switch (action.type) {
     case 'USERS_LOGIN_SUCCESS':
-      return {...state, loggedIn: true, userId: action.user.id, name: action.user.name };
-    default:
+    //userId: action.user.id, name: action.user.name
+      return {...state, loggedIn: true, user: action.user };
+    case 'USERS_LOGIN_FAILURE':
+      return {};
+    case 'USERS_LOGOUT':
+      return {};
+
+
+    
+      default:
       return state
   }
 }
@@ -37,9 +48,11 @@ const lists = (state = {lists: []}, action) => {
   }
 }
 
+
+
+
 export default {
   todos,
   lists,
-  login
-  // visibilityFilter
+  login,
 };
