@@ -15,11 +15,11 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.insert('users', ['name', 'email', 'password'], ['test_user', 'test', 'test'], callback)
+  db.addColumn('item', 'completed', {type: 'boolean', defaultValue: false }, callback);
 };
 
-exports.down = function(db) {
-  return null;
+exports.down = function(db, callback) {
+  db.removeColumn('item', 'completed', callback);
 };
 
 exports._meta = {

@@ -1,0 +1,34 @@
+.Header-toolbar {
+  background: #4A148C;
+  color: white;
+}
+
+.Header-toolbar h2 {
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.Header-toolbar a {
+  padding: 0 1rem 0 0;
+}
+
+.Header-toolbar span{
+  color: white;
+}
+
+.Header-toolbar-left {
+  width: 20%;
+  /* min-width: 20%; */
+}
+
+.Header-toolbar-center {
+  width: 70%;
+}
+
+.Header-toolbar-right {
+  width: 20%;
+  text-align: right;
+  font-size: 0.85rem;
+  /* min-width: 20%; */
+}

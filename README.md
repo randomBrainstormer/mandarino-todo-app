@@ -10,14 +10,3 @@ Prerequisiti:
 L'utente di prova è    user:  test   password: test 
 
 
-
-TODO
-[x] Implementare l'scrittura e lettura DB delle liste
-[] Implementare l'scrittura e lettura DB dei ToDos 
-[] Aggiungere funzione Logout
-[] Fare il login permanente per la sezione
-[] Aggiungere la posibilità di editare una lista
-[] Aggiungere la posibilità di editare un ToDo
-[] Aggiungere la possibilità di riordinare l'ordine dei ToDo
-[] Aggiungere sistema de notifiche. (se il login went wrong. Unable to add to list.  List added successfuly?
-[] add query creds strategy (fare i request all'api solo se sei logato)

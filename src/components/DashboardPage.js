@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, ListItem, List, ListItemText, Grid, Button,
+import { ListItem, List, ListItemText, Grid, Button,
   Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, TextField, 
   ListItemIcon, ListItemSecondaryAction, Icon, IconButton} from 'material-ui';
 import AddIcon from 'material-ui-icons/Add';
 import { Link } from 'react-router-dom'; 
 import { connect } from 'react-redux';
+import AppHeader from './Header';
 import './DashboardPage.css';
 
 class DashboardPage extends Component {
@@ -46,11 +47,7 @@ class DashboardPage extends Component {
   render() {
     return (
       <div className="DashboardPage">
-        <AppBar position="static" color="default">
-          <Toolbar className="Dashboard-toolbar">
-            <h2>TO-DO App</h2>
-          </Toolbar>
-        </AppBar>
+        <AppHeader />
         <List component="nav">
         </List>
         {
@@ -113,7 +110,7 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  userId: state.login.userId,
+  userId: state.login.user.id,
   lists: state.lists.lists
 });
 
