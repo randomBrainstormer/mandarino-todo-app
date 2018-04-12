@@ -74,7 +74,6 @@ app.delete('/api/deleteList', (req, res) => {
 });
 
 app.post('/api/add-todo', upload.fields([]), (req, res) => {
-  console.log( req.body );
   knex('item').insert(req.body).returning('id').then(result => {
     console.log('RESULT', result);
     knex('item').where('id', result[0])
@@ -83,7 +82,6 @@ app.post('/api/add-todo', upload.fields([]), (req, res) => {
 });
 
 app.get('/api/todos', (req, res) => {
-  console.log(req.query)
   knex('item').where('listId', req.query.listId)
   .then(result => {res.json(result)})
 })

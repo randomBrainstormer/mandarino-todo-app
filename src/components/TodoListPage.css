@@ -15,3 +15,7 @@
 .TodoListPage-add-input {
   width: 80%
 }
+
+.TodoListPage-form {
+  width: 100%;
+}
