@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.insert('users', ['name', 'email', 'password'], ['test', 'test', 'test'], callback)
+  db.insert('users', ['name', 'email', 'password'], ['test_user', 'test', 'test'], callback)
 };
 
 exports.down = function(db) {
