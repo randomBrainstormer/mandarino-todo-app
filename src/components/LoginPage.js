@@ -60,6 +60,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     .then(res => res.json())
     .then(json => {
       if (json.length > 0) {
+        localStorage.setItem('mandarino-user', JSON.stringify(json[0]));
         dispatch({ type: 'USERS_LOGIN_SUCCESS', user: json[0] });
       }
       else {

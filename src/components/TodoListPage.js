@@ -58,9 +58,10 @@ class TodoListPage extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  userId: state.login.userId,
+  user: state.login.user,
   todos: state.todos.todos.filter(item => Number(item.listId) === Number(ownProps.match.params.id)),
-  listId: state.router.location.pathname
+  listId: state.router.location.pathname,
+  auth: state.login.loggedIn
 });
 
 const mapDispatchToProps = (dispatch) => ({

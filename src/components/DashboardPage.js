@@ -113,7 +113,7 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  userId: state.login.userId,
+  userId: state.login.user.id,
   lists: state.lists.lists
 });
 
