@@ -10,12 +10,3 @@ Prerequisiti:
 L'utente di prova è    user:  test   password: test 
 
 
-
-TODO
-[] Implementare l'scrittura e lettura DB delle liste
-[] Implementare l'scrittura e lettura DB dei ToDos 
-[] Aggiungere funzione Logout
-[] Fare il login permanente per la sezione
-[] Aggiungere la posibilità di editare una lista
-[] Aggiungere la posibilità di editare un ToDo
-[] Aggiungere la possibilità di riordinare l'ordine dei ToDo

@@ -1,53 +1,91 @@
 import React, { Component } from 'react';
 import './TodoListPage.css';
-import { List, ListItem, ListItemText, ListItemSecondaryAction, Checkbox, IconButton, Icon,
-TextField, AppBar, Toolbar} from 'material-ui';
-import { Link } from 'react-router-dom'; 
+import { List, Icon, TextField, Button} from 'material-ui';
+import { connect } from 'react-redux';
+import TodoItem from './TodoItem';
+import AppHeader from './Header';
 
 class TodoListPage extends Component {
+
+  componentDidMount() {
+    this.props.getTodosAction(this.props.match.params.id);
+  }
 
   handleLogin = () => {
     console.log('Loging in....');
   }
+
+  handleAddTodo = (event) => {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    data.append('listId', this.props.match.params.id);
+
+    this.props.addToDoAction(data);
+
+    event.target.reset();
+  }
   
+  handleTodoComplete = (e) => {
+    console.log(e.target);
+  }
+
   render() {
     return (
       <div className="TodoListPage">
-        <AppBar position="static" color="default">
-          <Toolbar className="Dashboard-toolbar">
-            <Link to="/"><Icon>arrow_back</Icon></Link>
-            <h2>TO-DO App</h2>
-          </Toolbar>
-        </AppBar>
+        <AppHeader link="/" />
         <div className="TodoListPage-add">
           <Icon className="TodoListPage-add-icon">add</Icon>
-          <TextField className="TodoListPage-add-input" id="input-with-icon-grid" label="Aggiungi un ToDo" />
+          <form className="TodoListPage-form" onSubmit={this.handleAddTodo}>
+            <TextField className="TodoListPage-add-input" name="name" id="input-with-icon-grid" label="Aggiungi un To-Do" />
+            <Button className="TodoListPage-add-btn" color="primary" type="submit">Add</Button>
+          </form>
         </div>
         <List>
-          <ListItem
-            // key={i}
-            role={undefined}
-            dense
-            button
-            // onClick={this.handleToggle(value)}
-            // className={classes.listItem}
-          >
-            <Checkbox
-              // checked={this.state.checked.indexOf(value) !== -1}
-              tabIndex={-1}
-              disableRipple
-            />
-            <ListItemText primary={`Line item ${1 + 1}`} />
-            <ListItemSecondaryAction>
-              <IconButton aria-label="Comments">
-              <Icon>comment</Icon>
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
+          {
+            this.props.todos.map((todo, i) => <TodoItem item={todo} key={`${i}-${todo.id}`} unmountOnExit index={i}/> )
+          }          
         </List>
       </div>
     );
   }
 }
 
-export default TodoListPage;
+const mapStateToProps = (state, ownProps) => ({
+  user: state.login.user,
+  todos: state.todos.todos.filter(item => Number(item.listId) === Number(ownProps.match.params.id)),
+  listId: state.router.location.pathname,
+  auth: state.login.loggedIn
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addToDoAction: data => {
+    fetch('/api/add-todo', { method: 'POST', body: data })
+    .then(res => res.json())
+    .then(json => {
+      if (json.length > 0) {
+        dispatch({ type: 'ADD_TODO', todo: json[0] });
+      }
+      else {
+        dispatch({ type: 'REQUEST_FAILURE', json });
+      }
+    })
+    .catch(error => dispatch({ type: 'TODOS_ADD_FAILURE', error }));
+  },
+  getTodosAction: listId => {
+    fetch(`/api/todos?listId=${listId}`)
+    .then(res => res.json())
+    .then(json => dispatch({ type: 'TODOS_UPDATE_SUCCESS', todos: json }))
+    .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
+  },
+  deleteTodoAction: todo => {
+    fetch(`/api/deleteTodo?todoId=${todo.todoId}&listId=${todo.listId}`, { method: 'delete'})
+    .then(json => dispatch({ type: 'TODOS_DELETE_SUCCESS', id:todo.todoId }))
+    .catch(error => dispatch({ type: 'REQUEST_FAILURE', error }));
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+ )(TodoListPage);

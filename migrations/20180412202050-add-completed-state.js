@@ -14,18 +14,12 @@ exports.setup = function(options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = function (db, callback) {
-  db.createTable('users', {
-    id: { type: 'int', primaryKey: true, autoIncrement: true },
-    name: 'string',
-    password: 'string',
-    email: 'string'
-  }, callback);
+exports.up = function(db, callback) {
+  db.addColumn('item', 'completed', {type: 'boolean', defaultValue: false }, callback);
 };
 
-
-exports.down = function (db, callback) {
-  db.dropTable('users', callback);
+exports.down = function(db, callback) {
+  db.removeColumn('item', 'completed', callback);
 };
 
 exports._meta = {

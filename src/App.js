@@ -9,10 +9,6 @@ import DashboardPage from './components/DashboardPage';
  * token/cookies dall utente. Per fine di demo, default loggin = false.
  */
 class App extends Component {
-  componentDidMount() {
-    console.log(this.state, this.props.loggedIn);
-  }
-
   render() {
     return (
       <div className="App">
@@ -23,9 +19,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(' a preview of the state', state);
   return {
-    loggedIn: state.login.loggedIn
+    loggedIn: state.login.loggedIn,
   }
 };
 

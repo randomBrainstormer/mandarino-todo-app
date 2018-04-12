@@ -1,26 +1,17 @@
-.DashboardPage {
-    
+.DashboardPage li {
+  list-style: none;
+}
+
+.DashboardPage-list-link {
+  width: 100%;
 }
 
 .DashboardPage-list {
   text-decoration: none;
 }
 
-.Dashboard-toolbar {
-  background: #4A148C;
-  color: white;
-}
-
-.Dashboard-toolbar h2 {
-  text-align: center;
-  width: 80%;
-  margin: 0 auto;
-}
-
-.Dashboard-toolbar a {
-  padding: 0 1rem 0 0;
-}
-
-.Dashboard-toolbar span{
-  color: white;
+.deleteIcon {
+  color: #ba000d;
+  cursor: pointer;
+  padding-right: 1rem;
 }
