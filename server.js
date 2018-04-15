@@ -59,6 +59,14 @@ app.post('/api/add-list', upload.fields([]), (req, res) => {
   });
 });
 
+app.post('/api/update-list', upload.fields([]), (req, res) => {
+  console.log('req.', req.body);
+  knex('lists').where({ id: req.body.id }).update({ name: req.body.name }, 'id').then(result => {
+    knex('lists').where('id', req.body.id)
+    .then(list => res.json(list));
+  });
+});
+
 app.get('/api/lists', (req, res) => {
   knex('lists').where('userId', req.query.userId)
   .then(result => {res.json(result)})
