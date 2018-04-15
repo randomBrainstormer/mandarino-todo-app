@@ -38,6 +38,9 @@ const lists = (state = {lists: []}, action) => {
       return {...state, lists: action.lists}
     case 'LISTS_ADD_SUCCESS':
       return {...state, lists: [...state.lists, action.list ]};
+    case 'LISTS_EDIT_SUCCESS':
+      console.log('editing', action);
+      return {...state, lists: state.lists.map(list => Number(list.id) === Number(action.list.id) ? action.list : list)}
     case 'LISTS_DELETE_SUCCESS':
       return {...state, lists: state.lists.filter( item => Number(item.id) !== Number(action.id))};
     default:

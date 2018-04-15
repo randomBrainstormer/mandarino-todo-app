@@ -11,6 +11,9 @@ import './DashboardPage.css';
 class DashboardPage extends Component {
   state = {
     open: false,
+    listName: '',
+    inputBeingUpdated: false,
+    listId: null
   };
 
   componentDidMount(){
@@ -24,7 +27,7 @@ class DashboardPage extends Component {
 
   // Chiusura del modal
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, listName: '', inputBeingUpdated: false, listId: null });
   };
 
   handleAddList = (event) => {
@@ -33,14 +36,31 @@ class DashboardPage extends Component {
     const data = new FormData(event.target);
     data.append('userId', this.props.userId);
     
-    this.props.addListAction(data);
+    if (this.state.inputBeingUpdated) {
+      data.append('id', this.state.listId);
+      this.props.editListAction(data);
+    } else {
+      this.props.addListAction(data);
+    }
 
     // chiudere la modal
     this.handleClose();
   }
 
-  handleDelete = (e) => {
-    const id = e.target.getAttribute('data-id');
+  updateNameInput = (event) => {
+    this.setState({ listName: event.target.value });
+  }
+
+  handleEdit = (event) => {
+    const id = event.target.getAttribute('data-id');
+    const name = event.target.getAttribute('data-name');
+    if (name) {
+      this.setState({ open: true, listName: name, listId: id, inputBeingUpdated: true });
+    }
+  }
+  
+  handleDelete = (event) => {
+    const id = event.target.getAttribute('data-id');
     this.props.deleteListAction({ userId: this.props.userId, listId: id });
   }
 
@@ -59,7 +79,10 @@ class DashboardPage extends Component {
                 <Link key={list.id} to={`/list/${list.id}`} className="DashboardPage-list-link" >
                   <ListItemText primary={list.name} />
                 </Link>
-                <ListItemSecondaryAction>
+                <ListItemSecondaryAction data-id={list.id} data-name={list.name}>
+                  <IconButton aria-label="Edit" className="editIcon" data-id={list.id} data-name={list.name} onClick={this.handleEdit}>
+                    <Icon data-id={list.id} data-name={list.name}>edit</Icon>
+                  </IconButton>
                   <IconButton aria-label="Delete" className="deleteIcon" data-id={list.id} onClick={this.handleDelete}>
                     <Icon data-id={list.id}>delete</Icon>
                   </IconButton>
@@ -91,6 +114,8 @@ class DashboardPage extends Component {
                   id="list-name"
                   name="name"
                   label="Nome Lista"
+                  value={this.state.listName}
+                  onChange={this.updateNameInput} 
                   fullWidth
                 />
             </DialogContent>
@@ -99,7 +124,7 @@ class DashboardPage extends Component {
                 Cancel
               </Button>
               <Button color="primary" type="submit">
-                Crea
+                { this.state.inputBeingUpdated ? 'Aggiorna' : 'Crea'}
               </Button>
             </DialogActions>
           </form>
@@ -121,6 +146,19 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     .then(json => {
       if (json.length > 0) {
         dispatch({ type: 'LISTS_ADD_SUCCESS', list: json[0] });
+      }
+      else {
+        dispatch({ type: 'REQUEST_FAILURE', json });
+      }
+    })
+    .catch(error => dispatch({ type: 'LIST_ADD_FAILURE', error }));
+  },
+  editListAction: data => {
+    fetch('/api/update-list', { method: 'POST', body: data })
+    .then(res => res.json())
+    .then(json => {
+      if (json.length > 0) {
+        dispatch({ type: 'LISTS_EDIT_SUCCESS', list: json[0] });
       }
       else {
         dispatch({ type: 'REQUEST_FAILURE', json });
